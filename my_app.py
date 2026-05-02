@@ -16,7 +16,7 @@ class TestWin(QWidget):
         self.tw = FinalWin(self.exp)
 
 class MainWin(QWidget):
-    def __init(self):
+    def __init__(self):
         super().__init__()
         self.set_appear()
         self.initUI()
