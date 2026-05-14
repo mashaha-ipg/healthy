@@ -1,58 +1,83 @@
-from PyQt5.QtCore import Qt, QTimer, QTime
+from PyQt5.QtCore import Qt, QTime, QLocale
+from PyQt5.QtWidgets import (QApplication, QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QGroupBox, QRadioButton, QPushButton, QLabel, QListWidget, QLineEdit)  
 from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont
-from PyQt5.QtWidgets import (
-        QApplication, QWidget,
-        QHBoxLayout, QVBoxLayout,
-        QGroupBox, QRadioButton,
-        QPushButton, QLabel, QListWidget, QLineEdit)
-
 from instr import *
-from final_win import *
-
-class TestWin(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.set_appear()
+class FinalWin(QWidget):
+    def __init__(self, exp):
+        self.exp = exp
         self.initUI()
+        self.set_appear()
         self.show()
+
+    def results(self):
+        if self.exp.person.age <7:
+            self.index = 0
+            return "нет данных для такого возраста"
+        self.index = (4*(int(self.exp.test1)+ int(self.exp.test2)+int(self.exp.test3))-200)/10
+        if self.exp.person.age==7 or self.exp.person.age ==8:
+            if self.index >=21:
+                return txt_res1
+            elif self.index <21 and self.index >=17:
+                return txt_res2
+            elif self.index <17 and self.index >=12:
+                return txt_res3
+            elif self.index <12 and self.index >=6.5:
+                return txt_res4
+            else:
+                return txt_res5
+        if self.exp.person.age == 9 or self.exp.person.age ==10:
+            if self.index >=19.5:
+                return txt_res1
+            elif self.index <19.5 and self.index >=15.5:
+                return txt_res2
+            elif self.index <15.5 and self.index >=10.5:
+                return txt_res3
+            elif self.index <10.5 and self.index >=5:
+                return txt_res4
+            else:
+                return txt_res5
+        if self.exp.person.age == 11 or self.exp.person.age ==12:
+            if self.index >=18:
+                return txt_res1
+            elif self.index <18 and self.index >=14:
+                return txt_res2
+            elif self.index <14 and self.index >=9:
+                return txt_res3
+            elif self.index <9 and self.index >=3.5:
+                return txt_res4
+            else:
+                return txt_res5
+        if self.exp.person.age ==13 or self.exp.person.age ==14:
+            if self.index >=16.5:
+                return txt_res1
+            elif self.index <16.5 and self.index >=12.5:
+                return txt_res2
+            elif self.index <12.5 and self.index >=7.5:
+                return txt_res3
+            elif self.index <7.5 and self.index >=2:
+                return txt_res4
+            else:
+                return txt_res5
+        if self.exp.person.age >= 15:
+            if self.index >=15:
+                return txt_res1
+            elif self.index <15 and self.index >=11:
+                return txt_res2
+            elif self.index <11 and self.index >=6:
+                return txt_res3
+            elif self.index <6 and self.index >=0.5:
+                return txt_res4
+            else:
+                return txt_res5
+    def initUI(self):
+        self.workh_text = QLabel(txt_workheart + self.results())
+        self.index_text = QLabel(txt_index +str(self.index))
+
+        self.layout_line = QVBoxLayout()
+        self.layout_line.addWidget(self.index_text, alignment= QtAlignCenter)
+        self.layout_line.addWidget(self.workh_text, alignment=QtAlignCenter)
+        self.setLayout(self.layout_line)
     def set_appear(self):
-        self.setWindowTitle(txt_title)
+        self.setWindowTitle(txt_finalwin)
         self.resize(win_width, win_height)
         self.move(win_x, win_y)
-    def initUI(self):
-        self.btn_next = QPushButton(txt_sendresults, self)
-        self.btn_test1 = QPushButton(txt_starttest1, self)
-        self.btn_test2 = QPushButton(txt_starttest2, self)
-        self.btn_test3 = QPushButton(txt_starttest3, self)
-        self.text_name = QLabel(txt_name)
-        self.text_age = QLabel(txt_age)
-        self.text_test1 = QLabel(txt_test1)
-        self.text_test2 = QLabel(txt_test2)
-        self.text_test3 = QLabel(txt_test3)
-        self.text_timer = QLabel(txt_timer)
-        self.line_name = QLineEdit(txt_hintname)
-        self.line_age = QLineEdit(txt_hintage)
-        self.line_test1 = QLineEdit(txt_hinttest1)
-        self.line_test2 = QLineEdit(txt_hinttest2)
-        self.line_test3 = QLineEdit(txt_hinttest3)
-        self.l_line = QVBoxLayout()
-        self.r_line = QVBoxLayout()
-        self.h_line = QVBoxLayout()
-        self.r_line.addWidget(self.text_timer, alignment = Qt.AlignCenter)
-        self.l_line.addWidget(self.text_name, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.line_name, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.text_age, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.line_age, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.text_test1, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.btn_test1, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.line_test1, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.text_test2, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.btn_test2, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.text_test3, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.btn_test3, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.line_test2, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.line_test3, alignment = Qt.AlignLeft)
-        self.l_line.addWidget(self.btn_next, alignment = Qt.AlignCenter)
-        self.h_line.addLayout(self.l_line)
-        self.h_line.addLayout(self.r_line)
-        self.setLayout(self.h_line)
